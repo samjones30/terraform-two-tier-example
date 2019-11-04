@@ -7,7 +7,7 @@ resource "aws_security_group" "dbsg" {
         from_port = 5432
         to_port = 5432
         protocol = "tcp"
-        security_groups = ["${aws_security_group.websg.id}"]
+        security_groups = ["${aws_security_group.bigateway-sg.id}"]
     }
 
     tags = {
@@ -16,12 +16,17 @@ resource "aws_security_group" "dbsg" {
     }
 }
 
+resource "random_string" "ohs_pwd" {
+ length = 16
+ special = true
+}
+
 # Create new ohs DB
 resource "aws_db_instance" "ohs_db" {
   instance_class       = "db.t2.small"
   identifier           = "ohs-db"
   username             = "aws_master_user"
-  password             = "${var.db_pwd}"
+  password             = "${random_string.ohs_pwd.result}"
   db_subnet_group_name = "${var.private_subnet_az}"
   snapshot_identifier  = "${data.aws_db_snapshot.ohs_db_snapshot.id}"
   vpc_security_group_ids = ["${aws_security_group.dbsg.id}"]

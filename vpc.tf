@@ -35,7 +35,7 @@ resource "aws_subnet" "eu-west-2a-public" {
     availability_zone = "${var.public_subnet_az}"
     cidr_block = "${var.public_subnet_cidr}"
 
-    tags {
+    tags = {
         Name = "Reporting Public Subnet"
         Terraform = true
     }
@@ -48,7 +48,7 @@ resource "aws_route_table" "eu-west-2a-public" {
         gateway_id = "${aws_internet_gateway.igw.id}"
     }
 
-    tags {
+    tags = {
         Name = "Reporting Public Subnet"
         Terraform = true
     }
@@ -64,7 +64,7 @@ resource "aws_subnet" "eu-west-2b-private" {
     cidr_block = "${var.private_subnet_cidr}"
     availability_zone = "${var.private_subnet_az}"
 
-    tags {
+    tags = {
         Name = "Private Subnet"
         Terraform = true
     }
@@ -78,7 +78,7 @@ resource "aws_route_table" "eu-west-2b-private" {
         nat_gateway_id = "${aws_nat_gateway.natgw.id}"
     }
 
-    tags {
+    tags = {
         Name = "Private Subnet"
         Terraform = true
     }

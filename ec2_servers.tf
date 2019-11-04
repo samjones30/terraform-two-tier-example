@@ -42,7 +42,7 @@ resource "aws_security_group" "bigateway-sg" {
 }
 
 resource "aws_instance" "powerbi-data-gateway" {
-    ami = "${var.windows_ami}"
+    ami = "${var.windows-ami}"
     availability_zone = "${var.public_subnet_az}"
     instance_type = "t2.small"
     key_name = "${var.aws_key_name}"
@@ -50,7 +50,6 @@ resource "aws_instance" "powerbi-data-gateway" {
     subnet_id = "${aws_subnet.eu-west-2a-public.id}"
     associate_public_ip_address = true
     source_dest_check = false
-    key_name = "${file(var.private_key_path)}"
 
     tags = {
         Name = "PowerBI Gateway"

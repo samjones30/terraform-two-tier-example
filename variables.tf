@@ -32,7 +32,7 @@ variable "aws_key_name" {
 }
 
 variable "private_key_path" {
-    default = "C:\Users\samjo\Documents\reporting\reporting-poc.pem"
+    default = "C:\\Users\\samjo\\Documents\\reporting\\reporting-poc.pem"
 }
 
 variable "cis_ami" {
@@ -41,8 +41,4 @@ variable "cis_ami" {
 
 variable "windows-ami" {
     default = "ami-06ea28ca18bb79e3c"
-}
-
-variable "db_pwd" {
-    default = "r3p0rt1ng"
 }

@@ -6,10 +6,14 @@ output "public_instance_dns" {
     value = "${aws_instance.powerbi-data-gateway.public_dns}"
 }
 
-output "private_instance_ip" {
-    value = "${aws_instance.ohs_db.private_ip}"    
+output "OHS_DB_endpoint_ip" {
+    value = "${aws_db_instance.ohs_db.endpoint}"
+}
+
+output "OHS_DB_pwd" {
+    value = "${aws_db_instance.ohs_db.password}"
 }
 
 output "Windows_Administrator_Password" {
-    value = "${rsadecrypt(aws_instance.powerbi-data-gateway.password_data, file("${module.ssh_key_pair.private_key_path}"))}"
+    value = "${rsadecrypt(aws_instance.powerbi-data-gateway.password_data, file("${var.private_key_path}"))}"
 }
