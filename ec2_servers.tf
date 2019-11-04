@@ -1,7 +1,7 @@
-resource "aws_security_group" "websg" {
-    name = "vpc_web"
+resource "aws_security_group" "bigateway-sg" {
+    name = "bigateway-sg"
     description = "Allow incoming HTTP connections."
-    vpc_id = "${aws_vpc.customvpc.id}"
+    vpc_id = "${aws_vpc.reportingvpc.id}"
 
     ingress {
         from_port = 80
@@ -36,43 +36,29 @@ resource "aws_security_group" "websg" {
     }
 
     tags = {
-        Name = "WebSG"
+        Name = "PowerBISG"
         Terraform = true
     }
 }
 
-resource "aws_instance" "web1" {
-    ami = "${data.aws_ami.ubuntu.id}"
-    availability_zone = "us-east-1a"
-    instance_type = "t2.micro"
+resource "aws_instance" "powerbi-data-gateway" {
+    ami = "${var.windows_ami}"
+    availability_zone = "${var.public_subnet_az}"
+    instance_type = "t2.small"
     key_name = "${var.aws_key_name}"
-    vpc_security_group_ids = ["${aws_security_group.websg.id}"]
-    subnet_id = "${aws_subnet.us-east-1a-public.id}"
+    vpc_security_group_ids = ["${aws_security_group.bigateway-sg.id}"]
+    subnet_id = "${aws_subnet.eu-west-2a-public.id}"
     associate_public_ip_address = true
     source_dest_check = false
+    key_name = "${file(var.private_key_path)}"
 
     tags = {
-        Name = "WebServer"
+        Name = "PowerBI Gateway"
         Terraform = true
-    }
-
-    connection {
-        type     = "ssh"
-        user     = "ubuntu"
-        timeout = "1m"
-        private_key = "${file(var.private_key_path)}"
-    }
-
-    provisioner "remote-exec" {
-        inline = [
-            "sudo apt-get update -y",
-            "sudo apt-get install apache2 -y",
-            "sudo service apache2 start"
-        ]
     }
 }
 
 resource "aws_eip" "web1" {
-    instance = "${aws_instance.web1.id}"
+    instance = "${aws_instance.powerbi-data-gateway.id}"
     vpc = true
 }

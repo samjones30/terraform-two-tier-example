@@ -1,23 +1,26 @@
-variable "aws_access_key" {
-    default = ""
-}
-variable "aws_secret_key" {
-    default = ""
-}
+
 variable "aws_region" {
-    default = "us-east-1"
+    default = "eu-west-2"
 }
 
 variable "vpc_cidr" {
-    default = "10.0.0.0/16"
+    default = "10.2.0.0/16"
 }
 
 variable "public_subnet_cidr" {
-    default = "10.0.0.0/24"
+    default = "10.2.0.0/24"
+}
+
+variable "public_subnet_az" {
+    default = "eu-west-2a"
 }
 
 variable "private_subnet_cidr" {
-    default = "10.0.1.0/24"
+    default = "10.2.1.0/24"
+}
+
+variable "private_subnet_az" {
+    default = "eu-west-2b"
 }
 
 variable "allow_all" {
@@ -25,9 +28,21 @@ variable "allow_all" {
 }
 
 variable "aws_key_name" {
-    default = "yourkeyname"
+    default = "reporting-poc"
 }
 
 variable "private_key_path" {
-    default = "/path/to/yourkeyname.pem"
+    default = "C:\Users\samjo\Documents\reporting\reporting-poc.pem"
+}
+
+variable "cis_ami" {
+    default = "ami-ea3f2b8e"
+}
+
+variable "windows-ami" {
+    default = "ami-06ea28ca18bb79e3c"
+}
+
+variable "db_pwd" {
+    default = "r3p0rt1ng"
 }

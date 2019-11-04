@@ -1,13 +1,15 @@
-data "aws_ami" "ubuntu" {
+# Get latest snapshot from production DB
+data "aws_db_snapshot" "ohs_db_snapshot" {
     most_recent = true
+    db_instance_identifier = "dps-tst-hec-ohs-dat00"
+}
 
-    filter {
-        name = "name"
-        values = ["ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-*"] 
-    }
+data "aws_db_snapshot" "prc_db_snapshot" {
+    most_recent = true
+    db_instance_identifier = "dps-tst-hec-prc-dat00"
+}
 
-    filter {
-        name = "virtualization-type"
-        values = ["hvm"]
-    }
+data "aws_db_snapshot" "jobs_db_snapshot" {
+    most_recent = true
+    db_instance_identifier = "dps-dev-hec-nhsj-dat00"
 }
