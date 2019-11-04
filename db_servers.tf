@@ -16,6 +16,12 @@ resource "aws_security_group" "dbsg" {
     }
 }
 
+resource "aws_db_subnet_group" "reporting-db-subnet-group" {
+  name        = "reporting-subnet-group"
+  description = " Reporting RDS subnet group"
+  subnet_ids  = ["${aws_subnet.eu-west-2b-private.id}", "${aws_subnet.eu-west-2a-private.id}" ]
+}
+
 resource "random_string" "ohs_pwd" {
  length = 16
  special = true
@@ -27,7 +33,7 @@ resource "aws_db_instance" "ohs_db" {
   identifier           = "ohs-db"
   username             = "aws_master_user"
   password             = "${random_string.ohs_pwd.result}"
-  db_subnet_group_name = "${var.private_subnet_az}"
+  db_subnet_group_name = "${aws_db_subnet_group.reporting-db-subnet-group.id}"
   snapshot_identifier  = "${data.aws_db_snapshot.ohs_db_snapshot.id}"
   vpc_security_group_ids = ["${aws_security_group.dbsg.id}"]
   skip_final_snapshot = true

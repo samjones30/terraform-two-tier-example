@@ -59,13 +59,24 @@ resource "aws_route_table_association" "eu-west-2a-public" {
     route_table_id = "${aws_route_table.eu-west-2a-public.id}"
 }
 
+resource "aws_subnet" "eu-west-2a-private" {
+    vpc_id = "${aws_vpc.reportingvpc.id}"
+    cidr_block = "${var.private_subnet2_cidr}"
+    availability_zone = "${var.private_subnet2_az}"
+
+    tags = {
+        Name = "Private Subnet eu-west-2a"
+        Terraform = true
+    }
+}
+
 resource "aws_subnet" "eu-west-2b-private" {
     vpc_id = "${aws_vpc.reportingvpc.id}"
     cidr_block = "${var.private_subnet_cidr}"
     availability_zone = "${var.private_subnet_az}"
 
     tags = {
-        Name = "Private Subnet"
+        Name = "Private Subnet eu-west-2b"
         Terraform = true
     }
 }

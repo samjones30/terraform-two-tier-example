@@ -15,6 +15,14 @@ variable "public_subnet_az" {
     default = "eu-west-2a"
 }
 
+variable "private_subnet2_cidr" {
+    default = "10.2.2.0/24"
+}
+
+variable "private_subnet2_az" {
+    default = "eu-west-2a"
+}
+
 variable "private_subnet_cidr" {
     default = "10.2.1.0/24"
 }
