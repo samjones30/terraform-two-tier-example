@@ -27,6 +27,16 @@ resource "random_string" "ohs_pwd" {
  special = true
 }
 
+resource "random_string" "prc_pwd" {
+ length = 16
+ special = true
+}
+
+resource "random_string" "jobs_pwd" {
+ length = 16
+ special = true
+}
+
 # Create new ohs DB
 resource "aws_db_instance" "ohs_db" {
   instance_class       = "db.t2.small"
@@ -39,6 +49,38 @@ resource "aws_db_instance" "ohs_db" {
   skip_final_snapshot = true
   tags = {
       Name = "OHS DB Server"
+      Terraform = true
+  }
+}
+
+# Create new prc DB
+resource "aws_db_instance" "prc_db" {
+  instance_class       = "db.t2.small"
+  identifier           = "prc-db"
+  username             = "aws_master_user"
+  password             = "${random_string.prc_pwd.result}"
+  db_subnet_group_name = "${aws_db_subnet_group.reporting-db-subnet-group.id}"
+  snapshot_identifier  = "${data.aws_db_snapshot.prc_db_snapshot.id}"
+  vpc_security_group_ids = ["${aws_security_group.dbsg.id}"]
+  skip_final_snapshot = true
+  tags = {
+      Name = "PRC DB Server"
+      Terraform = true
+  }
+}
+
+# Create new jobs DB
+resource "aws_db_instance" "jobs_db" {
+  instance_class       = "db.t2.small"
+  identifier           = "jobs-db"
+  username             = "aws_master_user"
+  password             = "${random_string.jobs_pwd.result}"
+  db_subnet_group_name = "${aws_db_subnet_group.reporting-db-subnet-group.id}"
+  snapshot_identifier  = "${data.aws_db_snapshot.jobs_db_snapshot.id}"
+  vpc_security_group_ids = ["${aws_security_group.dbsg.id}"]
+  skip_final_snapshot = true
+  tags = {
+      Name = "Jobs DB Server"
       Terraform = true
   }
 }
